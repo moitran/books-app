@@ -1,0 +1,71 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: books-app
+    container_name: books-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - books-app-network
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+      - elasticsearch
+    env_file:
+      - .env
+
+  db:
+    image: mysql:8.0
+    container_name: books-app-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: books
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - books-app-network
+    env_file:
+      - .env
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    container_name: books-app-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    networks:
+      - books-app-network
+    env_file:
+      - .env
+
+  nginx:
+    image: nginx:alpine
+    container_name: books-app-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - books-app-network
+
+volumes:
+  db_data:
+
+networks:
+  books-app-network:
