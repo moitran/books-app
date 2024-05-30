@@ -29,7 +29,7 @@ class BookFactory extends Factory
             'provider_id' => Provider::inRandomOrder()->first()->id,
             'category_id' => Category::inRandomOrder()->first()->id,
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ];
     }
 }

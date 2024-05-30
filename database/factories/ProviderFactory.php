@@ -22,7 +22,7 @@ class ProviderFactory extends Factory
             'name' => $this->faker->company,
             'url' => $this->faker->url,
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ];
     }
 }

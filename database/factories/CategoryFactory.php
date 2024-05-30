@@ -24,7 +24,7 @@ class CategoryFactory extends Factory
             'description' => $this->faker->sentence,
             // 'slug' => $this->faker->slug,
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ];
     }
 }

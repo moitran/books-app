@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Support\Facades\Log;
 use JeroenG\Explorer\Application\Explored;
 use JeroenG\Explorer\Application\IndexSettings;
 use Laravel\Scout\Searchable;
@@ -15,10 +14,11 @@ class Book extends Model implements Explored, IndexSettings
 {
     use HasFactory;
     use HasUuids;
-    use Sluggable;
     use Searchable;
+    use Sluggable;
 
     public $incrementing = false;
+
     protected $keyType = 'string';
 
     protected $fillable = [
@@ -33,8 +33,8 @@ class Book extends Model implements Explored, IndexSettings
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
 
@@ -82,7 +82,6 @@ class Book extends Model implements Explored, IndexSettings
             'updated_at' => $this->updated_at,
         ];
     }
-
 
     public function category()
     {

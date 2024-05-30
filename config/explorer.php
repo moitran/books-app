@@ -36,7 +36,7 @@ return [
      * of the mapping possibilities can be found in the documentation of Explorer's repository.
      */
     'indexes' => [
-        \App\Models\Book::class
+        \App\Models\Book::class,
     ],
 
     /**
