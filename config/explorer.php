@@ -9,9 +9,16 @@ return [
      * https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/configuration.html
      */
     'connection' => [
-        'host' => 'localhost',
-        'port' => '9200',
-        'scheme' => 'http',
+        'host' => env('ELASTICSEARCH_HOST', '127.0.0.1'),
+        'port' => env('ELASTICSEARCH_PORT', '9200'),
+        'scheme' => 'https',
+        'auth' => [
+            'username' => env('ELASTICSEARCH_USER', 'elastic'),
+            'password' => env('ELASTICSEARCH_PASSWORD', ''),
+        ],
+        'ssl' => [
+            'verify' => false,
+        ],
     ],
 
     /**
@@ -29,7 +36,7 @@ return [
      * of the mapping possibilities can be found in the documentation of Explorer's repository.
      */
     'indexes' => [
-        // \App\Models\Post::class
+        \App\Models\Book::class
     ],
 
     /**
