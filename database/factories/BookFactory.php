@@ -22,7 +22,6 @@ class BookFactory extends Factory
         return [
             'id' => Uuid::uuid4()->toString(),
             'book_number' => $this->faker->unique()->isbn13,
-            // 'slug' => $this->faker->slug,
             'title' => $this->faker->sentence,
             'author' => $this->faker->name,
             'description' => $this->faker->paragraph,

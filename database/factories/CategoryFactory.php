@@ -22,7 +22,6 @@ class CategoryFactory extends Factory
             'name' => $this->faker->word,
             'level' => $this->faker->numberBetween(1, 5),
             'description' => $this->faker->sentence,
-            // 'slug' => $this->faker->slug,
             'created_at' => now(),
             'updated_at' => now(),
         ];
