@@ -22,9 +22,9 @@ class BookFactory extends Factory
         return [
             'id' => Uuid::uuid4()->toString(),
             'book_number' => $this->faker->unique()->isbn13,
-            'title' => $this->faker->sentence,
-            'author' => $this->faker->name,
-            'description' => $this->faker->paragraph,
+            'title' => $this->faker->realText(),
+            'author' => $this->faker->name(),
+            'description' => $this->faker->paragraph(),
             'provider_id' => Provider::inRandomOrder()->first()->id,
             'category_id' => Category::inRandomOrder()->first()->id,
             'created_at' => now(),

@@ -19,8 +19,8 @@ class ProviderFactory extends Factory
     {
         return [
             'id' => Uuid::uuid4()->toString(),
-            'name' => $this->faker->company,
-            'url' => $this->faker->url,
+            'name' => $this->faker->company(),
+            'url' => $this->faker->url(),
             'created_at' => now(),
             'updated_at' => now(),
         ];
