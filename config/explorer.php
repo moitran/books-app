@@ -11,14 +11,7 @@ return [
     'connection' => [
         'host' => env('ELASTICSEARCH_HOST', '127.0.0.1'),
         'port' => env('ELASTICSEARCH_PORT', '9200'),
-        'scheme' => 'https',
-        'auth' => [
-            'username' => env('ELASTICSEARCH_USER', 'elastic'),
-            'password' => env('ELASTICSEARCH_PASSWORD', ''),
-        ],
-        'ssl' => [
-            'verify' => false,
-        ],
+        'scheme' => 'http',
     ],
 
     /**

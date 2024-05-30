@@ -44,12 +44,12 @@ services:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+      - 'xpack.security.enabled=false'
+      - 'xpack.security.enrollment.enabled=false'
     ports:
       - 9200:9200
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
     networks:
       - books-app-network
 
@@ -58,6 +58,11 @@ services:
     container_name: kibana
     ports:
       - 5601:5601
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      # - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=d1a66dfd-c4d3-4a0a-8290-2abcb83ab3ab
+    volumes:
+      - kibana:/usr/share/kibana/data
     networks:
       - books-app-network
 
@@ -76,7 +81,9 @@ services:
 volumes:
   mysql_data:
     driver: local
-  esdata01:
+  elasticsearch:
+    driver: local
+  kibana:
     driver: local
 
 networks:
