@@ -19,7 +19,7 @@ class BookController extends Controller
      */
     public function index(IndexRequest $request): JsonResource
     {
-        $perPage = $request->query('per_page', 10);
+        $perPage = $request->integer('per_page', 10);
         $query = $request->query('query');
         $orderBy = $request->query('order_by', 'created_at');
         $orderType = $request->query('order_type', 'desc');
