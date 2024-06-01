@@ -16,6 +16,68 @@ class BookController extends Controller
 
     /**
      * Display a listing of the resource.
+     *
+     * @OA\Get(
+     *     path="/api/books",
+     *     summary="Get a list of books",
+     *     tags={"Books"},
+     *
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Number of page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="query",
+     *         in="query",
+     *         description="Search query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="order_by",
+     *         in="query",
+     *         description="Field to order by",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", enum={"title", "author", "created_at", "updated_at"}, default="created_at")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="order_type",
+     *         in="query",
+     *         description="Order type (ascending or descending)",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/BookResource")
+     *         )
+     *     )
+     * )
      */
     public function index(IndexRequest $request): JsonResource
     {
@@ -46,6 +108,33 @@ class BookController extends Controller
 
     /**
      * Display the specified resource.
+     *
+     * @OA\Get(
+     *     path="/api/books/{id}",
+     *     summary="Get a specific book by ID",
+     *     tags={"Books"},
+     *
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the book to retrieve",
+     *         required=true,
+     *
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/BookResource")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="The Book does not found"
+     *     )
+     * )
      */
     public function show(string $id)
     {

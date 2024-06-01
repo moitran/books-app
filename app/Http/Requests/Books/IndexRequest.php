@@ -23,7 +23,8 @@ class IndexRequest extends FormRequest
     {
         return [
             'query' => 'nullable|string|max:255',
-            'per_page' => 'nullable|integer|min:1|max:100',
+            'per_page' => 'nullable|integer|min:1',
+            'page' => 'nullable|integer|min:1|max:100',
             'order_by' => 'nullable|string|in:title,author,created_at,updated_at',
             'order_type' => 'nullable|string|in:asc,desc',
         ];
