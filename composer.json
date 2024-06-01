@@ -12,6 +12,7 @@
         "laravel/framework": "^11.9",
         "laravel/scout": "^10.9",
         "laravel/tinker": "^2.9",
+        "predis/predis": "^2.0",
         "ramsey/uuid": "^4.7"
     },
     "require-dev": {
