@@ -27,6 +27,8 @@ class IndexRequest extends FormRequest
             'page' => 'nullable|integer|min:1|max:100',
             'order_by' => 'nullable|string|in:title,author,created_at,updated_at',
             'order_type' => 'nullable|string|in:asc,desc',
+            'category_id' => 'nullable|exists:categories,id',
+            'provider_id' => 'nullable|exists:providers,id',
         ];
     }
 }

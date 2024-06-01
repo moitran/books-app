@@ -50,6 +50,24 @@ class BookController extends Controller
      *     ),
      *
      *     @OA\Parameter(
+     *         name="category_id",
+     *         in="query",
+     *         description="Search by Category",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="provider_id",
+     *         in="query",
+     *         description="Search by Provider",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     *
+     *     @OA\Parameter(
      *         name="order_by",
      *         in="query",
      *         description="Field to order by",
@@ -79,13 +97,9 @@ class BookController extends Controller
      *     )
      * )
      */
-    public function index(IndexRequest $request): JsonResource
+    public function index(IndexRequest $indexRequest): JsonResource
     {
-        $perPage = $request->integer('per_page', 10);
-        $query = $request->query('query');
-        $orderBy = $request->query('order_by', 'created_at');
-        $orderType = $request->query('order_type', 'desc');
-        $books = $this->bookService->getAllBooks($perPage, $query, $orderBy, $orderType);
+        $books = $this->bookService->getAllBooks($indexRequest);
 
         return BookResource::collection($books);
     }
