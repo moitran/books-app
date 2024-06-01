@@ -6,6 +6,8 @@ use App\Http\Requests\Books\IndexRequest;
 use App\Models\Book;
 use Illuminate\Foundation\Http\FormRequest;
 use InvalidArgumentException;
+use JeroenG\Explorer\Domain\Query\QueryProperties\TrackTotalHits;
+use JeroenG\Explorer\Domain\Syntax\Compound\BoolQuery;
 use JeroenG\Explorer\Domain\Syntax\Matching;
 use JeroenG\Explorer\Domain\Syntax\Nested;
 use JeroenG\Explorer\Domain\Syntax\Term;
@@ -24,12 +26,15 @@ class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
         $providerId = $request->query('provider_id');
 
         /** @var Builder $builder */
-        $builder = Book::search();
+        $builder = Book::search()
+            ->property(TrackTotalHits::all());
 
         if ($query) {
-            $builder->filter(
-                new Matching('title', $query)
-            );
+            $bool = new BoolQuery();
+            $bool->should(new Matching('title', $query));
+            // title mathc query OR author match query
+            $bool->should(new Matching('author', $query));
+            $builder->filter($bool);
         }
 
         if ($categoryId) {
