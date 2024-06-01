@@ -7,6 +7,29 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin \App\Models\Category
+ *
+ * @OA\Schema(
+ *     schema="CategoryResource",
+ *     title="Category Resource",
+ *     description="Category resource representation",
+ *
+ *     @OA\Property(
+ *         property="id",
+ *         type="string",
+ *         format="uuid",
+ *         description="ID of the category"
+ *     ),
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         description="Name of the category"
+ *     ),
+ *     @OA\Property(
+ *         property="slug",
+ *         type="string",
+ *         description="Slug of the category"
+ *     )
+ * )
  */
 class CategoryResource extends JsonResource
 {

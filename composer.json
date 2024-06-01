@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "cviebrock/eloquent-sluggable": "^11.0",
+        "darkaonline/l5-swagger": "^8.6",
         "jeroen-g/explorer": "^3.14",
         "laravel/framework": "^11.9",
         "laravel/scout": "^10.9",
