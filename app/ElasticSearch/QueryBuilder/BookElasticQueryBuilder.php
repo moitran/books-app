@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use JeroenG\Explorer\Domain\Syntax\Matching;
 use JeroenG\Explorer\Domain\Syntax\Nested;
 use JeroenG\Explorer\Domain\Syntax\Term;
-use Laravel\Scout\Builder;
+use JeroenG\Explorer\Infrastructure\Scout\Builder;
 
 class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
 {
@@ -23,22 +23,23 @@ class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
         $categoryId = $request->query('category_id');
         $providerId = $request->query('provider_id');
 
-        $books = Book::search();
+        /** @var Builder $builder */
+        $builder = Book::search();
 
         if ($query) {
-            $books->filter(
+            $builder->filter(
                 new Matching('title', $query)
             );
         }
 
         if ($categoryId) {
-            $books->must(new Nested('category', new Term('category.id', $categoryId)));
+            $builder->must(new Nested('category', new Term('category.id', $categoryId)));
         }
 
         if ($providerId) {
-            $books->must(new Nested('provider', new Term('provider.id', $providerId)));
+            $builder->must(new Nested('provider', new Term('provider.id', $providerId)));
         }
 
-        return $books;
+        return $builder;
     }
 }

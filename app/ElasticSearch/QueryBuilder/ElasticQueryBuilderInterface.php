@@ -3,7 +3,7 @@
 namespace App\ElasticSearch\QueryBuilder;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Laravel\Scout\Builder;
+use JeroenG\Explorer\Infrastructure\Scout\Builder;
 
 interface ElasticQueryBuilderInterface
 {
