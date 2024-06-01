@@ -26,13 +26,12 @@ class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
         $providerId = $request->query('provider_id');
 
         /** @var Builder $builder */
-        $builder = Book::search()
-            ->property(TrackTotalHits::all());
+        $builder = Book::search();
 
         if ($query) {
             $bool = new BoolQuery();
             $bool->should(new Matching('title', $query));
-            // title mathc query OR author match query
+            // title match query OR author match query
             $bool->should(new Matching('author', $query));
             $builder->filter($bool);
         }
@@ -44,6 +43,8 @@ class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
         if ($providerId) {
             $builder->must(new Nested('provider', new Term('provider.id', $providerId)));
         }
+
+        $builder->property(TrackTotalHits::all());
 
         return $builder;
     }
