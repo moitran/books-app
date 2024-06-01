@@ -17,7 +17,7 @@ services:
       - "9000:9000"
     depends_on:
       - db
-      - elasticsearch
+      - elasticsearch1
 
   db:
     image: mysql:8.0
@@ -35,21 +35,45 @@ services:
     networks:
       - books-app-network
   
-  elasticsearch:
+  elasticsearch1:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
-    container_name: elasticsearch
+    container_name: elasticsearch1
     environment:
       - node.name=es01
       - cluster.name=es-docker-cluster
-      - discovery.type=single-node
+      - discovery.seed_hosts=elasticsearch1,elasticsearch2
+      - cluster.initial_master_nodes=es01
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - 'xpack.security.enabled=false'
-      - 'xpack.security.enrollment.enabled=false'
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g" 
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
     ports:
       - 9200:9200
     volumes:
-      - elasticsearch:/usr/share/elasticsearch/data
+      - elasticsearch1:/usr/share/elasticsearch/data
+    networks:
+      - books-app-network
+
+  elasticsearch2:
+    depends_on:
+      - elasticsearch1
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elasticsearch2
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=elasticsearch1,elasticsearch2
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    volumes:
+      - elasticsearch2:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     networks:
       - books-app-network
 
@@ -59,12 +83,14 @@ services:
     ports:
       - 5601:5601
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      # - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=d1a66dfd-c4d3-4a0a-8290-2abcb83ab3ab
+      - ELASTICSEARCH_HOSTS=http://elasticsearch1:9200
     volumes:
       - kibana:/usr/share/kibana/data
     networks:
       - books-app-network
+    depends_on:
+      - elasticsearch1
+      - elasticsearch2
 
   nginx:
     image: nginx:alpine
@@ -81,9 +107,13 @@ services:
 volumes:
   mysql_data:
     driver: local
-  elasticsearch:
+  elasticsearch1:
+    driver: local
+  elasticsearch2:
     driver: local
   kibana:
+    driver: local
+  metricbeatdata:
     driver: local
 
 networks:

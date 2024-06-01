@@ -30,9 +30,10 @@ class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
 
         if ($query) {
             $bool = new BoolQuery();
+            // title match query OR author match query OR book_number match query
             $bool->should(new Matching('title', $query));
-            // title match query OR author match query
             $bool->should(new Matching('author', $query));
+            $bool->should(new Matching('book_number', $query));
             $builder->filter($bool);
         }
 

@@ -14,7 +14,22 @@ class BookService
     {
     }
 
-    public function getAllBooks(IndexRequest $indexRequest): LengthAwarePaginator
+    public function getAllBooks(int $perPage = 10, ?string $query = null, string $orderBy = 'created_at', string $orderType = 'desc'): LengthAwarePaginator
+    {
+        $books = Book::orderBy($orderBy, $orderType);
+        if ($query) {
+            $books->where('title', 'like', "%{$query}%")
+                ->orWhere('author', 'like', "%{$query}%")
+                ->orWhere('book_number', 'like', "%{$query}%")
+                ->orWhereHas('category', function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%");
+                });
+        }
+
+        return $books->paginate($perPage);
+    }
+
+    public function search(IndexRequest $indexRequest): LengthAwarePaginator
     {
         $perPage = $indexRequest->integer('per_page', 10);
         $orderBy = $indexRequest->query('order_by', 'created_at');

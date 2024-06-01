@@ -41,6 +41,91 @@ class BookController extends Controller
      *     ),
      *
      *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Number of page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="query",
+     *         in="query",
+     *         description="Search query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="order_by",
+     *         in="query",
+     *         description="Field to order by",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", enum={"title", "author", "created_at", "updated_at"}, default="created_at")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="order_type",
+     *         in="query",
+     *         description="Order type (ascending or descending)",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/BookResource")
+     *         )
+     *     )
+     * )
+     */
+    public function index(IndexRequest $request): JsonResource
+    {
+        $perPage = $request->integer('per_page', 10);
+        $query = $request->query('query');
+        $orderBy = $request->query('order_by', 'created_at');
+        $orderType = $request->query('order_type', 'desc');
+        $books = $this->bookService->getAllBooks($perPage, $query, $orderBy, $orderType);
+
+        return BookResource::collection($books);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @OA\Get(
+     *     path="/api/books/search",
+     *     summary="Get a list of books",
+     *     tags={"Books"},
+     *
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Number of page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *
+     *     @OA\Parameter(
      *         name="query",
      *         in="query",
      *         description="Search query",
@@ -97,9 +182,9 @@ class BookController extends Controller
      *     )
      * )
      */
-    public function index(IndexRequest $indexRequest): JsonResource
+    public function search(IndexRequest $indexRequest): JsonResource
     {
-        $books = $this->bookService->getAllBooks($indexRequest);
+        $books = $this->bookService->search($indexRequest);
 
         return BookResource::collection($books);
     }
