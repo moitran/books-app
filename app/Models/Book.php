@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use JeroenG\Explorer\Application\Explored;
 use JeroenG\Explorer\Application\IndexSettings;
+use JeroenG\Explorer\Domain\Analysis\Analysis;
+use JeroenG\Explorer\Domain\Analysis\Analyzer\StandardAnalyzer;
+use JeroenG\Explorer\Domain\Analysis\Filter\SynonymFilter;
 use Laravel\Scout\Searchable;
 
 /**
@@ -62,6 +66,13 @@ class Book extends Model implements Explored, IndexSettings
         'author',
     ];
 
+    public static array $sortMapping = [
+        'title' => 'slug',
+        'author' => 'author',
+        'created_at' => 'created_at',
+        'updated_at' => 'updated_at',
+    ];
+
     public function sluggable(): array
     {
         return [
@@ -73,17 +84,15 @@ class Book extends Model implements Explored, IndexSettings
 
     public function indexSettings(): array
     {
-        return [
-            'analysis' => [
-                'analyzer' => [
-                    'standard_lowercase' => [
-                        'type' => 'custom',
-                        'tokenizer' => 'standard',
-                        'filter' => ['lowercase'],
-                    ],
-                ],
-            ],
-        ];
+        $synonymFilter = new SynonymFilter();
+
+        $synonymAnalyzer = new StandardAnalyzer('synonym');
+        $synonymAnalyzer->setFilters(['lowercase', $synonymFilter]);
+
+        return (new Analysis())
+            ->addAnalyzer($synonymAnalyzer)
+            ->addFilter($synonymFilter)
+            ->build();
     }
 
     public function mappableAs(): array
@@ -91,13 +100,22 @@ class Book extends Model implements Explored, IndexSettings
         return [
             'id' => 'keyword',
             'book_number' => 'keyword',
-            'slug' => 'text',
-            'title' => 'text',
+            'slug' => 'keyword',
+            'title' => [
+                'type' => 'text',
+                'analyzer' => 'synonym',
+            ],
             'author' => 'text',
-            'category.name' => 'text',
-            'category.slug' => 'text',
             'created_at' => 'date',
             'updated_at' => 'date',
+            'category' => [
+                'id' => 'keyword',
+                'name' => 'text',
+            ],
+            'provider' => [
+                'id' => 'keyword',
+                'name' => 'text',
+            ],
         ];
     }
 
@@ -109,10 +127,18 @@ class Book extends Model implements Explored, IndexSettings
             'slug' => $this->slug,
             'title' => $this->title,
             'author' => $this->author,
-            'category.name' => $this->category->name,
-            'category.slug' => $this->category->slug,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            // Category data
+            'category' => [
+                'id' => $this->category->id,
+                'name' => $this->category->name,
+            ],
+            // Provider data
+            'provider' => [
+                'id' => $this->provider->id,
+                'name' => $this->provider->name,
+            ],
         ];
     }
 
@@ -130,5 +156,10 @@ class Book extends Model implements Explored, IndexSettings
     public function provider()
     {
         return $this->belongsTo(Provider::class);
+    }
+
+    protected function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with(['category', 'provider']);
     }
 }

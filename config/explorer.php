@@ -43,5 +43,5 @@ return [
      * to a PSR-3 logger. Disabled by default for performance.
      */
     'logging' => env('EXPLORER_ELASTIC_LOGGER_ENABLED', false),
-    'logger' => null,
+    'logger' => 'elasticsearch',
 ];
