@@ -66,13 +66,6 @@ class Book extends Model implements Explored, IndexSettings
         'author',
     ];
 
-    public static array $sortMapping = [
-        'title' => 'slug',
-        'author' => 'author',
-        'created_at' => 'created_at',
-        'updated_at' => 'updated_at',
-    ];
-
     public function sluggable(): array
     {
         return [

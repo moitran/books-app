@@ -10,6 +10,13 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookService
 {
+    public static array $sortMapping = [
+        'title' => 'slug',
+        'author' => 'author',
+        'created_at' => 'created_at',
+        'updated_at' => 'updated_at',
+    ];
+
     public function __construct(private readonly ElasticSearchQueryBuilderFactory $elasticSearchQueryBuilderFactory)
     {
     }
@@ -38,7 +45,7 @@ class BookService
         $bookElasticQueryBuilder = $this->elasticSearchQueryBuilderFactory->createBookElasticQueryBuilder();
 
         return $bookElasticQueryBuilder->build($indexRequest)
-            ->orderBy(Book::$sortMapping[$orderBy], $orderType)
+            ->orderBy(self::$sortMapping[$orderBy], $orderType)
             ->paginate($perPage);
     }
 
