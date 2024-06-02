@@ -18,6 +18,7 @@ services:
     depends_on:
       - db
       - elasticsearch1
+      - redis
 
   db:
     image: mysql:8.0
@@ -32,6 +33,18 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    networks:
+      - books-app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - redis:/data
     networks:
       - books-app-network
   
@@ -100,7 +113,7 @@ services:
       - "8080:8080"
     volumes:
       - .:/var/www/html
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - books-app-network
 
@@ -113,7 +126,7 @@ volumes:
     driver: local
   kibana:
     driver: local
-  metricbeatdata:
+  redis:
     driver: local
 
 networks:
