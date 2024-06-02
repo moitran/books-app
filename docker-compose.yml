@@ -113,7 +113,7 @@ services:
       - "8080:8080"
     volumes:
       - .:/var/www/html
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - books-app-network
 
