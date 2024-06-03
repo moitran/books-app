@@ -3,6 +3,7 @@
 [![PHPStan](https://github.com/moitran/books-app/actions/workflows/phpstan-ci.yml/badge.svg)](https://github.com/moitran/books-app/actions/workflows/phpstan-ci.yml)
 [![Pint](https://github.com/moitran/books-app/actions/workflows/pint-ci.yml/badge.svg)](https://github.com/moitran/books-app/actions/workflows/pint-ci.yml)
 [![PHPUnit](https://github.com/moitran/books-app/actions/workflows/phpunit-ci.yml/badge.svg)](https://github.com/moitran/books-app/actions/workflows/phpunit-ci.yml)
+[![codecov](https://codecov.io/github/moitran/books-app/graph/badge.svg?token=FKQVP99EM5)](https://codecov.io/github/moitran/books-app)
 
 
 ## About Books App
