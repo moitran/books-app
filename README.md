@@ -27,36 +27,41 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
     ```bash
     git clone git@github.com:moitran/books-app.git
     cd books-app
+    cp .env.example .env
     ```
 
 2. Start the Docker containers:
     ```bash
     docker compose up -d
     ```
+3. Laravel app key generation
+    ```bash
+    docker compose exec -it app php artisan key:generate
+    ```
 
-3. Run database migrations
+4. Run database migrations
     ```bash
     docker compose exec -it app php artisan migrate
     ```
     ![image](https://github.com/moitran/books-app/assets/30226535/3dbfbc67-99a7-4620-a035-5d05954690bd)
 
-4. Run database seeding
+5. Run database seeding
     ```bash
     docker compose exec -it app php artisan db:seed
     ```
     ![image](https://github.com/moitran/books-app/assets/30226535/06f5ee67-5365-423b-b680-f151fc1ee9c7)
 
 
-5. Perform a full sync of book data into Elasticsearch:
+6. Perform a full sync of book data into Elasticsearch:
     ```bash
     docker compose exec -it app php artisan scout:import "App\Models\Book"
     ```
     ![image](https://github.com/moitran/books-app/assets/30226535/4be9786e-5dab-4be7-be78-28d666212cdc)
 
 
-6. Access the homepage at `http://localhost:8080`.
+7. Access the homepage at `http://localhost:8080`.
 
-7. Perform API by CURL or you can perform on Swagger
+8. Perform API by CURL or you can perform on Swagger
 
     * Search by ES:
 
@@ -74,11 +79,11 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
         --header 'User-Agent: insomnia/9.2.0'
     ```
 
-8. [Laravel Swagger](https://github.com/DarkaOnLine/L5-Swagger) is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
+9. Laravel Swagger is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
 ![image](https://github.com/moitran/books-app/assets/30226535/6bc75562-68c3-4c11-a7d4-41ffa00ac489)
 
-9. Application monitoring is integrated with [Laravel Telescope](https://laravel.com/docs/11.x/telescope). You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
+10. Application monitoring is integrated with Laravel Telescope. You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
 ![image](https://github.com/moitran/books-app/assets/30226535/0492ec20-c0f1-44df-9aa8-02443daf9d75)
 
-10. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
+11. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
 ![image](https://github.com/moitran/books-app/assets/30226535/3d05b6ac-051f-44e9-a1bb-1e51a36bca6c)
