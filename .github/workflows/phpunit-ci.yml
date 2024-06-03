@@ -1,0 +1,29 @@
+name: PHPUnit
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  phpunit:
+    name: phpunit
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        coverage: none
+
+    - name: Install composer dependencies
+      run: composer install -n --prefer-dist
+
+    - name: Run Static Analysis
+      run: ./vendor/bin/phpunit
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
