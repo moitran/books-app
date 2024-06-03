@@ -11,6 +11,9 @@ Our Books API features a robust search endpoint that allows users to perform qui
 
 To ensure optimal search performance, we have integrated Elasticsearch, which significantly speeds up full-text search capabilities. Additionally, we have implemented a Redis caching layer to further enhance the overall performance and efficiency of the API. With these technologies, the Books API delivers a fast, reliable, and scalable solution for accessing and managing extensive book data.
 
+![image](https://github.com/moitran/books-app/assets/30226535/87042629-4f6a-489f-b6ef-d75f355e1071)
+
+
 ## Prerequisites
 
 - Docker >=25
