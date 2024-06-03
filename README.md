@@ -55,12 +55,29 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
 
 6. Access the homepage at `http://localhost:8080`.
 
-7. Application monitoring is integrated with Laravel Telescope. You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
-![image](https://github.com/moitran/books-app/assets/30226535/0492ec20-c0f1-44df-9aa8-02443daf9d75)
+7. Perform API by CURL or you can perform on Swagger
 
-8. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
-![image](https://github.com/moitran/books-app/assets/30226535/3d05b6ac-051f-44e9-a1bb-1e51a36bca6c)
+    * Search by ES:
 
-9. Laravel Swagger is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
+    ```
+        curl --request GET \
+        --url 'http://localhost:8080/api/books/search?query=and&per_page=100&order_by=title&order_type=desc&page=100' \
+        --header 'User-Agent: insomnia/9.2.0'
+    ```
+
+
+    * Search by Mysql:
+    ```
+        curl --request GET \
+        --url 'http://localhost:8080/api/books?query=and&per_page=100&order_by=title&order_type=desc&page=1' \
+        --header 'User-Agent: insomnia/9.2.0'
+    ```
+
+8. Laravel Swagger is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
 ![image](https://github.com/moitran/books-app/assets/30226535/6bc75562-68c3-4c11-a7d4-41ffa00ac489)
 
+9. Application monitoring is integrated with Laravel Telescope. You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
+![image](https://github.com/moitran/books-app/assets/30226535/0492ec20-c0f1-44df-9aa8-02443daf9d75)
+
+10. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
+![image](https://github.com/moitran/books-app/assets/30226535/3d05b6ac-051f-44e9-a1bb-1e51a36bca6c)
