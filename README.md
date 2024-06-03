@@ -9,6 +9,7 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
 
 ![image](https://github.com/moitran/books-app/assets/30226535/87042629-4f6a-489f-b6ef-d75f355e1071)
 
+* ***Book Crawler** in step 1 has not been implemented yet in this source. For now, we are temporarily using PHP Faker to create some dummy data.*
 
 ## Prerequisites
 
@@ -73,10 +74,10 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
         --header 'User-Agent: insomnia/9.2.0'
     ```
 
-8. Laravel Swagger is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
+8. [Laravel Swagger](https://github.com/DarkaOnLine/L5-Swagger) is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
 ![image](https://github.com/moitran/books-app/assets/30226535/6bc75562-68c3-4c11-a7d4-41ffa00ac489)
 
-9. Application monitoring is integrated with Laravel Telescope. You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
+9. Application monitoring is integrated with [Laravel Telescope](https://laravel.com/docs/11.x/telescope). You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
 ![image](https://github.com/moitran/books-app/assets/30226535/0492ec20-c0f1-44df-9aa8-02443daf9d75)
 
 10. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
