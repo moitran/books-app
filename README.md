@@ -32,11 +32,15 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
 
 2. Start the Docker containers:
     ```bash
-    docker compose up -d
+    docker compose up -d --build
     ```
-3. Laravel app key generation
+3. Composer install
     ```bash
+    docker compose exec -it app composer install
+    # Generate Laravel application keys
     docker compose exec -it app php artisan key:generate
+    # clear cache & reload config
+    docker compose exec -it app php artisan optimize
     ```
 
 4. Run database migrations
