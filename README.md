@@ -34,20 +34,34 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
     docker compose up -d
     ```
 
-3. Run database migrations and seed dummy book data:
+3. Run database migrations
     ```bash
-    docker compose exec -it app php artisan migrate:refresh --seed
+    docker compose exec -it app php artisan migrate
     ```
+    ![image](https://github.com/moitran/books-app/assets/30226535/3dbfbc67-99a7-4620-a035-5d05954690bd)
 
-4. Perform a full sync of book data into Elasticsearch:
+4. Run database seeding
+    ```bash
+    docker compose exec -it app php artisan db:seed
+    ```
+    ![image](https://github.com/moitran/books-app/assets/30226535/06f5ee67-5365-423b-b680-f151fc1ee9c7)
+
+
+5. Perform a full sync of book data into Elasticsearch:
     ```bash
     docker compose exec -it app php artisan scout:import "App\Models\Book"
     ```
+    ![image](https://github.com/moitran/books-app/assets/30226535/4be9786e-5dab-4be7-be78-28d666212cdc)
 
-5. Access the homepage at `http://localhost:8080`.
 
-6. Application monitoring is integrated with Laravel Telescope. You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
+6. Access the homepage at `http://localhost:8080`.
 
-7. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
+7. Application monitoring is integrated with Laravel Telescope. You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
+![image](https://github.com/moitran/books-app/assets/30226535/0492ec20-c0f1-44df-9aa8-02443daf9d75)
 
-8. Laravel Swagger is integrated for API specifications. You can check it out at `http://localhost:8080/api/docs`.
+8. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
+![image](https://github.com/moitran/books-app/assets/30226535/3d05b6ac-051f-44e9-a1bb-1e51a36bca6c)
+
+9. Laravel Swagger is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
+![image](https://github.com/moitran/books-app/assets/30226535/6bc75562-68c3-4c11-a7d4-41ffa00ac489)
+
