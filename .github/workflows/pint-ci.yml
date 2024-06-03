@@ -1,4 +1,4 @@
-name: Laravel
+name: Pint
 
 on:
   pull_request:

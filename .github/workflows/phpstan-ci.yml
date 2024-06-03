@@ -1,4 +1,4 @@
-name: Laravel
+name: PHPStan
 
 on:
   pull_request:
