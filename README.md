@@ -1,66 +1,84 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About Books App
 
-## About Laravel
+The Books API app is designed to aggregate and manage book data from a multitude of providers, seamlessly importing this data into a MySQL database.
+Our Books API features a robust search endpoint that allows users to perform quick searches across millions of stored books.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+To ensure optimal search performance, we have integrated Elasticsearch, which significantly speeds up full-text search capabilities. Additionally, we have implemented a Redis caching layer to further enhance the overall performance and efficiency of the API. With these technologies, the Books API delivers a fast, reliable, and scalable solution for accessing and managing extensive book data.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+![image](https://github.com/moitran/books-app/assets/30226535/87042629-4f6a-489f-b6ef-d75f355e1071)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* ***Book Crawler** in step 1 has not been implemented yet in this source. For now, we are temporarily using PHP Faker to create some dummy data.*
 
-## Learning Laravel
+## Prerequisites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Docker >=25
+- PHP 8.2
+- MySQL 8
+- Elasticsearch 8.13.4
+- Kibana 8.13.4
+- Redis 7.2.5
+- Nginx 1.25.5
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## How to Run on a Local Machine
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone the repository:
+    ```bash
+    git clone git@github.com:moitran/books-app.git
+    cd books-app
+    ```
 
-## Laravel Sponsors
+2. Start the Docker containers:
+    ```bash
+    docker compose up -d
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. Run database migrations
+    ```bash
+    docker compose exec -it app php artisan migrate
+    ```
+    ![image](https://github.com/moitran/books-app/assets/30226535/3dbfbc67-99a7-4620-a035-5d05954690bd)
 
-### Premium Partners
+4. Run database seeding
+    ```bash
+    docker compose exec -it app php artisan db:seed
+    ```
+    ![image](https://github.com/moitran/books-app/assets/30226535/06f5ee67-5365-423b-b680-f151fc1ee9c7)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
 
-## Contributing
+5. Perform a full sync of book data into Elasticsearch:
+    ```bash
+    docker compose exec -it app php artisan scout:import "App\Models\Book"
+    ```
+    ![image](https://github.com/moitran/books-app/assets/30226535/4be9786e-5dab-4be7-be78-28d666212cdc)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+6. Access the homepage at `http://localhost:8080`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7. Perform API by CURL or you can perform on Swagger
 
-## Security Vulnerabilities
+    * Search by ES:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```
+        curl --request GET \
+        --url 'http://localhost:8080/api/books/search?query=and&per_page=100&order_by=title&order_type=desc&page=100' \
+        --header 'User-Agent: insomnia/9.2.0'
+    ```
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    * Search by Mysql:
+    ```
+        curl --request GET \
+        --url 'http://localhost:8080/api/books?query=and&per_page=100&order_by=title&order_type=desc&page=1' \
+        --header 'User-Agent: insomnia/9.2.0'
+    ```
+
+8. [Laravel Swagger](https://github.com/DarkaOnLine/L5-Swagger) is integrated for API specifications. You can check it out at `http://localhost:8080/api/documentation`.
+![image](https://github.com/moitran/books-app/assets/30226535/6bc75562-68c3-4c11-a7d4-41ffa00ac489)
+
+9. Application monitoring is integrated with [Laravel Telescope](https://laravel.com/docs/11.x/telescope). You can access it at `http://localhost:8080/telescope` to monitor requests, queues, Redis, etc.
+![image](https://github.com/moitran/books-app/assets/30226535/0492ec20-c0f1-44df-9aa8-02443daf9d75)
+
+10. To visualize Elasticsearch data, Kibana is integrated. You can access it at `http://localhost:5601`.
+![image](https://github.com/moitran/books-app/assets/30226535/3d05b6ac-051f-44e9-a1bb-1e51a36bca6c)
