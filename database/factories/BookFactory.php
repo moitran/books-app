@@ -4,11 +4,9 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Provider;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
-use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Book>
@@ -23,6 +21,7 @@ class BookFactory extends Factory
     public function definition(): array
     {
         $title = $this->faker->realText();
+
         return [
             'id' => Uuid::uuid4()->toString(),
             'book_number' => $this->faker->unique()->isbn13 . $this->faker->unique()->numberBetween(1, 1000000),

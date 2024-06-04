@@ -9,6 +9,6 @@ class ElasticSearchQueryBuilderFactory
 {
     public function createBookElasticQueryBuilder(): ElasticQueryBuilderInterface
     {
-        return new BookElasticQueryBuilder();
+        return new BookElasticQueryBuilder;
     }
 }

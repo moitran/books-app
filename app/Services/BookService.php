@@ -52,8 +52,8 @@ class BookService
     public function getBookById(string $id): Book
     {
         $book = Book::find($id);
-        if (! $book) {
-            throw new BookNotFoundException();
+        if (!$book) {
+            throw new BookNotFoundException;
         }
 
         return $book->load('category', 'provider');

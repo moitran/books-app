@@ -17,7 +17,7 @@ class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
 {
     public function build(FormRequest $request): Builder
     {
-        if (! $request instanceof IndexRequest) {
+        if (!$request instanceof IndexRequest) {
             throw new InvalidArgumentException('Request must be an instance of IndexRequest');
         }
 
@@ -29,7 +29,7 @@ class BookElasticQueryBuilder implements ElasticQueryBuilderInterface
         $builder = Book::search();
 
         if ($query) {
-            $bool = new BoolQuery();
+            $bool = new BoolQuery;
             // title match query OR author match query OR book_number match query
             $bool->should(new Matching('title', $query));
             $bool->should(new Matching('author', $query));

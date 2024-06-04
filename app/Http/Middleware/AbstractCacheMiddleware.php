@@ -11,6 +11,6 @@ abstract class AbstractCacheMiddleware
         $queries = $request->query();
         sort($queries);
 
-        return $request->path().serialize($queries);
+        return $request->path() . serialize($queries);
     }
 }

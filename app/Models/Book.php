@@ -25,8 +25,8 @@ use Laravel\Scout\Searchable;
  * @property string $category_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Category $category
- * @property-read \App\Models\Provider $provider
+ * @property-read Category $category
+ * @property-read Provider $provider
  *
  * @method static \Database\Factories\BookFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Book findSimilarSlugs(string $attribute, array $config, string $slug)
@@ -60,7 +60,6 @@ class Book extends Model implements Explored, IndexSettings
 
     public $timestamps = true;
 
-
     protected $fillable = [
         'book_number',
         'slug',
@@ -80,12 +79,12 @@ class Book extends Model implements Explored, IndexSettings
 
     public function indexSettings(): array
     {
-        $synonymFilter = new SynonymFilter();
+        $synonymFilter = new SynonymFilter;
 
         $synonymAnalyzer = new StandardAnalyzer('synonym');
         $synonymAnalyzer->setFilters(['lowercase', $synonymFilter]);
 
-        return (new Analysis())
+        return (new Analysis)
             ->addAnalyzer($synonymAnalyzer)
             ->addFilter($synonymFilter)
             ->build();

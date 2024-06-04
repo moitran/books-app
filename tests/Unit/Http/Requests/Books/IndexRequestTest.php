@@ -9,7 +9,7 @@ class IndexRequestTest extends TestCase
 {
     public function test_rules_set_are_correct()
     {
-        $indexRequest = new IndexRequest();
+        $indexRequest = new IndexRequest;
         $this->assertEquals([
             'query' => 'nullable|string|max:255',
             'per_page' => 'nullable|integer|min:1',
@@ -23,7 +23,7 @@ class IndexRequestTest extends TestCase
 
     public function test_authorize_is_true()
     {
-        $indexRequest = new IndexRequest();
+        $indexRequest = new IndexRequest;
         $this->assertTrue($indexRequest->authorize());
     }
 }
