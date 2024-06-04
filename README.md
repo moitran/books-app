@@ -13,9 +13,33 @@ Our Books API features a robust search endpoint that allows users to perform qui
 
 To ensure optimal search performance, we have integrated Elasticsearch, which significantly speeds up full-text search capabilities. Additionally, we have implemented a Redis caching layer to further enhance the overall performance and efficiency of the API. With these technologies, the Books API delivers a fast, reliable, and scalable solution for accessing and managing extensive book data.
 
-![image](https://github.com/moitran/books-app/assets/30226535/87042629-4f6a-489f-b6ef-d75f355e1071)
+![image](https://github.com/moitran/books-app/assets/30226535/a2d9f1f3-0808-400f-a8d4-876d146a3791)
+
 
 * ***Book Crawler** in step 1 has not been implemented yet in this source. For now, we are temporarily using PHP Faker to create some dummy data.*
+
+## Performance comparison between ES & Mysql
+
+* The performance of Elasticsearch and MySQL is nearly identical when the total number of book records is below 100,000.
+* However, when the number of book records is increased to approximately 800,000:
+    * Increasing ES nodes from 1 to 2 resulted in ES being three times faster than MySQL.
+    * Currently, the search API applies sorting and pagination, which impacts search performance.
+    * Considering scenarios where the user is typing in the search input and we implement an API for auto-suggesting books relevant to the typed keywords without sorting and pagination, I believe the search performance in ES can be significantly faster.
+![image](https://github.com/moitran/books-app/assets/30226535/778ab1cd-774b-470f-b3b1-faa183763631)
+![image](https://github.com/moitran/books-app/assets/30226535/bba8fd0b-7df0-448b-a81d-3e862c10a0d3)
+![image](https://github.com/moitran/books-app/assets/30226535/1843b3fe-c7c0-4f9a-8f08-6d5b0fdc00cd)
+
+MySQL CURL request
+```
+curl --request GET \
+  --url 'http://localhost:8080/api/books?query=and&per_page=100&order_by=title&order_type=desc&page=401'
+```
+
+ES CURL request
+```
+curl --request GET \
+  --url 'http://localhost:8080/api/books/search?query=and&per_page=100&order_by=title&order_type=desc&page=401'
+```
 
 ## Prerequisites
 
@@ -64,7 +88,17 @@ To ensure optimal search performance, we have integrated Elasticsearch, which si
 
 6. Perform a full sync of book data into Elasticsearch:
     ```bash
+    # Publish book data into ES
     docker compose exec -it app php artisan scout:import "App\Models\Book"
+
+    # Setting ES index.max_result_window upto a million
+    docker compose exec -it app curl -X PUT "localhost:9200/my_index/_settings" -H 'Content-Type: application/json' -d'
+    {
+      "index" : {
+        "max_result_window" : 100000
+      }
+    }
+    '
     ```
     ![image](https://github.com/moitran/books-app/assets/30226535/4be9786e-5dab-4be7-be78-28d666212cdc)
 
