@@ -19,7 +19,7 @@ class CategoryFactory extends Factory
     {
         return [
             'id' => Uuid::uuid4()->toString(),
-            'name' => $this->faker->realText(20),
+            'name' => 'Category name - ' . $this->faker->realText(20),
             'level' => $this->faker->numberBetween(1, 5),
             'description' => $this->faker->sentence(),
             'created_at' => now(),

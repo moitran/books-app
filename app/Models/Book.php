@@ -58,6 +58,9 @@ class Book extends Model implements Explored, IndexSettings
 
     protected $keyType = 'string';
 
+    public $timestamps = true;
+
+
     protected $fillable = [
         'book_number',
         'slug',

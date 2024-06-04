@@ -4,8 +4,11 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Provider;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Book>
@@ -19,16 +22,16 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
+        $title = $this->faker->realText();
         return [
             'id' => Uuid::uuid4()->toString(),
-            'book_number' => $this->faker->unique()->isbn13,
-            'title' => $this->faker->realText(),
+            'book_number' => $this->faker->unique()->isbn13 . $this->faker->unique()->numberBetween(1, 1000000),
+            'title' => 'Book title: ' . $this->faker->realText(20),
+            'slug' => Str::slug($title) . time() . $this->faker->unique()->numberBetween(1, 1000000),
             'author' => $this->faker->name(),
             'description' => $this->faker->paragraph(),
             'provider_id' => Provider::inRandomOrder()->first()->id,
             'category_id' => Category::inRandomOrder()->first()->id,
-            'created_at' => now(),
-            'updated_at' => now(),
         ];
     }
 }

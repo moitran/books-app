@@ -58,9 +58,10 @@ services:
       - discovery.seed_hosts=elasticsearch1,elasticsearch2
       - cluster.initial_master_nodes=es01
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms1g -Xmx21" 
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g" 
       - xpack.security.enabled=false
       - xpack.security.enrollment.enabled=false
+      - "index.max_result_window=1000000"
     ports:
       - 9200:9200
     volumes:
