@@ -128,10 +128,10 @@ return [
         ],
 
         'elasticsearch' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/elasticsearch.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 14,
+            'driver' => 'custom',
+            'via' => App\Logging\CreateElasticsearchLogger::class,
+            'index' => 'book_logs',
+            'endpoint' => env('ELASTICSEARCH_ENDPOINT', null),
         ],
     ],
 

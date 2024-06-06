@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'enable_redis_cache' => env('ENABLE_REDIS_CACHE', true),
 ];

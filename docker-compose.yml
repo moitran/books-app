@@ -61,7 +61,6 @@ services:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g" 
       - xpack.security.enabled=false
       - xpack.security.enrollment.enabled=false
-      - "index.max_result_window=1000000"
     ports:
       - 9200:9200
     volumes:

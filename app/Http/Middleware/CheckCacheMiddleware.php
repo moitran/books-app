@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Cache;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckCacheMiddleware extends AbstractCacheMiddleware
@@ -16,6 +17,12 @@ class CheckCacheMiddleware extends AbstractCacheMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!config('app.enable_redis_cache')) {
+            Log::warning('Disabled Redis cache');
+
+            return $next($request);
+        }
+
         $cacheKey = $this->generateCacheKey($request);
         if (Cache::has($cacheKey)) {
             return response(Cache::get($cacheKey));
